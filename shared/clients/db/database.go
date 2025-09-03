@@ -163,7 +163,7 @@ func ConnectDb(cfg *DBConfig) (*gorm.DB, error) {
 
 		instance = db
 	})
-	fmt.Println("Database connected successfully")
+	fmt.Println("Your",cfg.Driver,"Database connected successfully")
 	return instance, initErr
 }
 
