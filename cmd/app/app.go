@@ -107,7 +107,7 @@ func (a *App) initialize() {
 	mux := http.NewServeMux()
 	mux.Handle("/socket.io/", ioServer) // <--- socket.io endpoint
 	a.socketSrv = &http.Server{
-		Addr:    ":8080",
+		Addr:    ":8081",
 		Handler: mux,
 	}
 	a.registerRoutes()
