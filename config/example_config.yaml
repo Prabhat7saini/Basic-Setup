@@ -1,0 +1,36 @@
+ServerPort: 3000
+AppName: "tm-auth-service"
+AppVersion: "0.0.1"
+BaseUrl: "http://localhost:3000"
+Environment: development # development, stagging, uat, prod
+db:
+  host: 127.0.0.1
+  port: 5432
+  user: postgres
+  password: "postgres@123"
+  db_name: test_db
+  max_idle_connection: 10
+  max_open_connection: 50
+  conn_max_lifetime_minutes: 30
+  logging: "true"
+jwt:
+  access_token_expiry_hour: 1
+  refresh_token_expiry_hour: 24
+  access_token_secret: access_token_secret
+  refresh_token_secret: refresh_token_secret
+log:
+  level: "info" # options: debug, info, warn, error
+  format: "json" # options: json, console
+  enableCaller: true
+  enableStacktrace: false
+redis:
+  addr: "localhost:6379"
+  password: default
+  db: 0
+aws:
+  aws_region: saoufa
+  aws_access_key_id: key
+  aws_secret_access_key: value
+  aws_s3_bucket_name: example
+  aws_signed_url_expiry: 15 #minute
+  max_file_size: 52428800 #50MB
