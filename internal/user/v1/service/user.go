@@ -18,13 +18,11 @@ type UserServiceMethods interface {
 
 type userService struct {
 	repo   user_repository.UserRepositoryMethods
-	access UserServiceAccess
 }
 
-func NewUserService(repo user_repository.UserRepositoryMethods, access UserServiceAccess) UserServiceMethods {
+func NewUserService(repo user_repository.UserRepositoryMethods) UserServiceMethods {
 	return &userService{
 		repo:   repo,
-		access: access,
 	}
 }
 

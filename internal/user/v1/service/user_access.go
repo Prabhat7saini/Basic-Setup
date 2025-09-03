@@ -10,7 +10,7 @@ type UserServiceAccess struct {
 	Config *config.Env
 }
 
-func NewUserRepositoryAcess(redis redis.Client, config *config.Env) *UserServiceAccess {
+func NewUserServiceAccess(redis redis.Client, config *config.Env) *UserServiceAccess {
 	return &UserServiceAccess{
 		Redis:  redis,
 		Config: config,

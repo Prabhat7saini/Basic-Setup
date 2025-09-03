@@ -58,7 +58,7 @@ func (ul *userRepository) FindUserByFields(ctx context.Context, conditions map[s
 func (ul *userRepository) CreateUser(ctx context.Context, data map[string]any) (*models.User, *constants.Exception) {
 	user := &models.User{
 		Email:    data["email"].(string),
-		Password: data["password"].(string),
+		Password: data["password_hash"].(string),
 	}
 
 	if createdBy, ok := data["created_by"].(int); ok {

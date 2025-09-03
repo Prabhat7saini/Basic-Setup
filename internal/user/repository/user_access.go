@@ -12,10 +12,8 @@ type UserRepositoryAccess struct {
 	Config *config.Env
 }
 
-func NewUserRepositoryAcess(db *gorm.DB, redis redis.Client, config *config.Env) *UserRepositoryAccess {
+func NewUserRepositoryAccess(db *gorm.DB, redis redis.Client, config *config.Env) *UserRepositoryAccess {
 	return &UserRepositoryAccess{
 		DB:     db,
-		Redis:  redis,
-		Config: config,
 	}
 }
