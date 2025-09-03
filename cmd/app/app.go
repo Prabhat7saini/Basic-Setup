@@ -13,7 +13,6 @@ import (
 
 	// "github.com/Prabhat7saini/TestingGo/shared/clients/db"
 	"github.com/Prabhat7saini/Basic-Setup/config"
-	"github.com/Prabhat7saini/Basic-Setup/internal/initializer"
 	"github.com/Prabhat7saini/Basic-Setup/shared/clients/db"
 	"github.com/Prabhat7saini/Basic-Setup/shared/clients/redis"
 
@@ -35,9 +34,6 @@ type App struct {
 	db      *gorm.DB
 	redis   redis.Client
 	log     *zap.Logger
-	repo    *initializer.BaseRepository
-	service *initializer.BaseService
-	handler *initializer.BaseHandler
 	// s3 s3.Client
 	// socketHub *socket.Hub
 	socketSrv *http.Server
@@ -85,9 +81,7 @@ func (a *App) initialize() {
 
 	// Init Router
 	a.router = gin.Default()
-	a.repo = initializer.NewBaseRepository(a.redis, a.log, a.cfg, a.repo)
-	a.service = initializer.NewBaseService(a.redis, a.log, a.cfg, a.repo)
-	a.handler = initializer.NewBaseHandler(a.log, a.cfg, a.service)
+
 	// routes.NewRoutes(a.router, a.handler)
 
 	// validator.RegisterValidations()
@@ -111,6 +105,7 @@ func (a *App) initialize() {
 		Handler: mux,
 	}
 	a.registerRoutes()
+	
 
 }
 
