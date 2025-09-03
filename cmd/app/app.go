@@ -13,6 +13,8 @@ import (
 
 	// "github.com/Prabhat7saini/TestingGo/shared/clients/db"
 	"github.com/Prabhat7saini/Basic-Setup/config"
+	"github.com/Prabhat7saini/Basic-Setup/pkg/user/v1/dto"
+	user_service "github.com/Prabhat7saini/Basic-Setup/pkg/user/v1/service"
 	"github.com/Prabhat7saini/Basic-Setup/shared/clients/db"
 	"github.com/Prabhat7saini/Basic-Setup/shared/clients/redis"
 
@@ -28,12 +30,12 @@ import (
 )
 
 type App struct {
-	cfg     *config.Env
-	router  *gin.Engine
-	server  *http.Server
-	db      *gorm.DB
-	redis   redis.Client
-	log     *zap.Logger
+	cfg    *config.Env
+	router *gin.Engine
+	server *http.Server
+	db     *gorm.DB
+	redis  redis.Client
+	log    *zap.Logger
 	// s3 s3.Client
 	// socketHub *socket.Hub
 	socketSrv *http.Server
@@ -56,17 +58,17 @@ func (a *App) initialize() {
 	// }
 	// a.db = dbConn
 	dbConn, err := db.ConnectDb(&db.DBConfig{
-    Driver: "postgres",
-    Host: "localhost",
-    Port: 5432,
-    User: "prabhat",
-    Password: "prabhat",
-    DBName: "ChatAppGo",
-    MaxIdleConnection: 10,
-    MaxOpenConnection: 50,
-    ConnectionLifeTimeMinute: 30,
-    Logging: true,
-})
+		Driver:                   "postgres",
+		Host:                     "localhost",
+		Port:                     5432,
+		User:                     "prabhat",
+		Password:                 "prabhat",
+		DBName:                   "ChatAppGo",
+		MaxIdleConnection:        10,
+		MaxOpenConnection:        50,
+		ConnectionLifeTimeMinute: 30,
+		Logging:                  true,
+	})
 	if err != nil {
 		a.log.Fatal("failed to initialize database", zap.Error(err))
 	}
@@ -105,14 +107,32 @@ func (a *App) initialize() {
 		Handler: mux,
 	}
 	a.registerRoutes()
-	
 
 }
 
 func (a *App) registerRoutes() {
 	// Example route
 	a.router.GET("/health", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"status": "ok"})
+		newUser := dto.CreateUserDTO{
+			Name:      "test",
+			Email:     "test.gmail@gmail.com",
+			Password:  "test",
+			CreatedBy: -1,
+		}
+
+		userSvc := user_service.NewUserService()
+
+		output := userSvc.CreateUser(context.Background(), a.db, newUser)
+
+		c.JSON(output.HttpStatusCode, gin.H{
+			"message": output.Message,
+			"user":    output.OutputData,
+		})
+
+		// Call service method
+		// output := userSvc.CreateUser(context.Background(), a.db, newUser)
+
+		c.JSON(http.StatusOK, gin.H{"status": "ok", "user": output})
 	})
 
 }
